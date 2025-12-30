@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Arts District Kitchen - Restaurant Website
 
 A modern, responsive React restaurant website with dynamic theming and API integration.
@@ -139,3 +140,6 @@ npm run preview
 ## 📄 License
 
 MIT License - feel free to use for personal or commercial projects.
+=======
+# RestroHub-FrontEnd
+>>>>>>> 3575670653d3387c0c079d2cdd18d5f969164401
