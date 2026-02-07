@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSiteData } from '../context/SiteContext.jsx';
+import { useSiteData } from '../../context/SiteContext.jsx';
 
 // ============================================
 // NAVIGATION COMPONENT

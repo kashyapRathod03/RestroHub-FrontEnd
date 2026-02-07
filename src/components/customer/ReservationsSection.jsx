@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useSiteData } from '../context/SiteContext.jsx';
-import ApiService from '../services/ApiService.js';
+import { useSiteData } from '../../context/SiteContext.jsx';
+import ApiService from '../../services/ApiService.js';
 
 // ============================================
 // RESERVATIONS SECTION COMPONENT
