@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Copy, EyeOff, RefreshCw, Download, Loader2 } from 'lucide-react';
-// import api from '../../../services/api';
+import api from "@services/common/api";
 
 const BulkActions = ({ onRefresh }) => {
   const [loadingAction, setLoadingAction] = useState(null);
