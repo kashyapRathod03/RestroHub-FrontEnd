@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import ApiService from '../services/ApiService.js';
-import { defaultSiteData } from '../data/defaultData.js';
+import ApiService from '@services/public/ApiService';
+import { defaultSiteData } from '@data/defaultData.js';
 
 // ============================================
 // SITE CONTEXT

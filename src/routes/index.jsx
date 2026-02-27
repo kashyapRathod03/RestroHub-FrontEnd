@@ -5,23 +5,25 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import PublicLayout from '../layouts/PublicLayout';
 import CustomerLayout from '../layouts/CustomerLayout';
 import AdminLayout from '../layouts/AdminLayout';
+import ProtectedRoute from './ProtectedRoute';
 
 // Public Pages
 import Landing from '../pages/public/Landing';
+import Login from '../pages/public/Login';
 
 // Customer Pages
 import RestaurantMenu from '../pages/customer/RestaurantMenu';
 
 // Admin Pages
-import Dashboard from '../components/admin/dashboard/Dashboard';
-import Menus from '../components/admin/menu/Menus';
-import Orders from '../components/admin/orders/Orders';
-import Branches from '../components/admin/store/branch/Branches';
-import Tables from '../components/admin/store/tables/Tables';
-import Website from '../components/admin/marketing/website/Website';
-import QRDisplay from '../components/admin/marketing/qr/QRDisplay';
-import UPILinks from '../components/admin/upi/UPILinks';
-import Profile from '../components/admin/profile/Profile';
+import Dashboard from '@components/admin/dashboard/Dashboard';
+import Menus from '@components/admin/menu/Menus';
+import Orders from '@components/admin/orders/Orders';
+import Branches from '@components/admin/store/branch/Branches';
+import Tables from '@components/admin/store/tables/Tables';
+import Website from '@components/admin/marketing/website/Website';
+import QRDisplay from '@components/admin/marketing/qr/QRDisplay';
+import UPILinks from '@components/admin/upi/UPILinks';
+import Profile from '@components/admin/profile/Profile';
 
 const AppRoutes = () => {
   return (
@@ -29,18 +31,23 @@ const AppRoutes = () => {
       {/* ========== PUBLIC ROUTES ========== */}
       <Route element={<PublicLayout />}>
         <Route path="/" element={<Landing />} />
+        <Route path="/login" element={<Login />} />
       </Route>
 
       {/* ========== CUSTOMER ROUTES ========== */}
       <Route element={<CustomerLayout />}>
-        <Route 
-          path="/Restrohub/:restaurantName/:branchId" 
-          element={<RestaurantMenu />} 
+        <Route
+          path="/Restrohub/:restaurantName/:branchId"
+          element={<RestaurantMenu />}
         />
       </Route>
 
       {/* ========== ADMIN ROUTES ========== */}
-      <Route path="/admin" element={<AdminLayout />}>
+      <Route path="/admin" 
+            element={
+                  <ProtectedRoute>
+                    <AdminLayout />
+                    </ProtectedRoute>}>
         <Route index element={<Navigate to="/admin/dashboard" replace />} />
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="menus" element={<Menus />} />

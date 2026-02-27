@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Image as ImageIcon, X, Loader2 } from 'lucide-react';
 import { Dialog } from '@headlessui/react';
-// import api from '../../../services/api';
+import api from "@services/common/api";
+
 
 const MenuFormModal = ({ isOpen, onClose, editingItem }) => {
   const [formData, setFormData] = useState({
@@ -18,10 +19,10 @@ const MenuFormModal = ({ isOpen, onClose, editingItem }) => {
   useEffect(() => {
     if (editingItem) {
       setFormData({
-        name: editingItem.name,
-        price: editingItem.price.toString(),
-        category: editingItem.category,
-        stock: editingItem.stock.toString(),
+        name: editingItem.name || '',
+        price: editingItem.price?.toString() || '',
+        category: editingItem.category || 'main-course',
+        stock: editingItem.stock?.toString() || '',
       });
     } else {
       setFormData({ name: '', price: '', category: 'main-course', stock: '' });
@@ -38,29 +39,35 @@ const MenuFormModal = ({ isOpen, onClose, editingItem }) => {
       setSubmitting(true);
 
       const payload = {
-        ...formData,
+        name: formData.name,
+        description: "", // Add field later if needed
         price: Number(formData.price),
-        stock: Number(formData.stock),
+        category: formData.category,
+        imageUrl: "",
+        isAvailable: true,
+        isVeg: true,
+        isDelete: false
       };
 
+
       if (editingItem) {
-        // 🔌 UNCOMMENT WHEN API READY
-        // await api.put(`/api/menu/${editingItem.id}`, payload);
-        // toast.success('Item updated!');
+        const response = await api.put(
+          `/secure/api/v1/foods/${editingItem.id}`,
+          payload
+        );
 
         console.log('Update item:', editingItem.id, payload);
       } else {
-        // 🔌 UNCOMMENT WHEN API READY
-        // await api.post('/api/menu', payload);
-        // toast.success('Item added!');
+        const response = await api.post(
+          "/secure/api/v1/foods",
+          payload
+        );
 
         console.log('Add new item:', payload);
       }
-
-      await new Promise(resolve => setTimeout(resolve, 500));
-      onClose();
+     onClose();
     } catch (err) {
-      console.error('Failed to save item:', err);
+      console.error("Failed to save item:", err.response?.data || err);
     } finally {
       setSubmitting(false);
     }

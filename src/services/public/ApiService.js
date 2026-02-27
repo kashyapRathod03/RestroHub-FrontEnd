@@ -3,7 +3,7 @@
 // Handles all API calls for the application
 // ============================================
 
-const API_BASE_URL = 'https://api.example.com';
+const API_BASE_URL = 'http://localhost:8181/restroly';
 
 // Helper function for making API requests
 const apiRequest = async (endpoint, options = {}) => {
@@ -43,7 +43,7 @@ const ApiService = {
         // return await apiRequest('/site-data');
         
         // Import default data for simulation
-        const { defaultSiteData } = await import('../data/defaultData.js');
+        const { defaultSiteData } = await import('@data/defaultData.js');
         return defaultSiteData;
     },
 
@@ -81,7 +81,7 @@ const ApiService = {
         // const endpoint = category ? `/menu?category=${category}` : '/menu';
         // return await apiRequest(endpoint);
         
-        const { defaultSiteData } = await import('../data/defaultData.js');
+        const { defaultSiteData } = await import('@data/defaultData.js');
         
         if (category) {
             return { [category]: defaultSiteData.menu.items[category] };
@@ -154,7 +154,7 @@ const ApiService = {
         // TODO: Replace with actual API call
         // return await apiRequest(`/gallery?page=${page}&limit=${limit}`);
         
-        const { defaultSiteData } = await import('../data/defaultData.js');
+        const { defaultSiteData } = await import('@data/defaultData.js');
         return defaultSiteData.gallery;
     },
 

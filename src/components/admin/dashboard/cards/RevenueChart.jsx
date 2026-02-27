@@ -9,7 +9,7 @@ import {
   Tooltip,
   ResponsiveContainer
 } from 'recharts';
-// import api from '../../../services/api';
+import api from "@services/common/api";
 
 // ============================================
 // MAIN COMPONENT (Exported)

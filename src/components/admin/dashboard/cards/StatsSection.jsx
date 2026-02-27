@@ -7,7 +7,7 @@ import {
   TrendingUp,
   TrendingDown
 } from 'lucide-react';
-import axios from 'axios';
+import api from "@services/common/api";
 
 // ============================================
 // STAT CARD (Private to this file)
@@ -140,30 +140,30 @@ const StatsSection = () => {
   }, []);
 
   const fetchStats = async () => {
-    try {
-      debugger
-      setLoading(true);
-      setError(null);
+  try {
+    setLoading(true);
+    setError(null);
 
-      const response = await axios.get(
-        "http://localhost:8181/restroly/api/v1/dashboard/stats"
-      );
+    const response = await api.get("/secure/api/v1/dashboard/statistics");
 
-      const apiStats = response.data.map(stat => ({
-        ...stat,
-        icon: iconMap[stat.iconKey] || IndianRupee,
-      }));
+    console.log("Actual response:", response);
+    console.log("Response data:", response.data);
 
-      setStats(apiStats);
+    const apiStats = response.data.map(stat => ({
+      ...stat,
+      icon: iconMap[stat.iconKey] || IndianRupee,
+    }));
 
-    } catch (err) {
-      console.error('Failed to fetch stats:', err);
-      setError('Failed to load stats');
-      setStats(fallbackStats);
-    } finally {
-      setLoading(false);
-    }
-  };
+    setStats(apiStats);
+
+  } catch (err) {
+    console.error("Failed to fetch stats:", err);
+    setError("Failed to load stats");
+    setStats(fallbackStats);
+  } finally {
+    setLoading(false);
+  }
+};
 
   // ------------------------------------
   // REFRESH (can be called from parent)

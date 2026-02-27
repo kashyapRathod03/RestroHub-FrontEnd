@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Search, RefreshCw, AlertCircle, UtensilsCrossed } from 'lucide-react';
 import MenuItemCard from './MenuItemCard';
-// import api from '../../../services/api';
+import api from "@services/common/api";
+
 
 // ============================================
 // SKELETON - Responsive
@@ -89,19 +90,25 @@ const MenuItemsGrid = ({ selectedCategory, onEditItem }) => {
       setLoading(true);
       setError(null);
 
-      // 🔌 UNCOMMENT WHEN API READY
-      // const params = selectedCategory !== 'all' ? `?category=${selectedCategory}` : '';
-      // const response = await api.get(`/api/menu${params}`);
-      // setMenuItems(response.data);
+      // UNCOMMENT WHEN API READY
+      // Need to change this or api call
+       const params = selectedCategory !== 'all' ? `?category=${selectedCategory}` : '';
+       var response =null;
+       if(selectedCategory === 'all'){
+        response = await api.get(`/secure/api/v1/foods?page=0&size=10&sortBy=name&sortDirection=asc`);
+        setMenuItems(response.data.content);
+       }else{
+        response = await api.get(`/secure/api/v1/foods/category/${params}?page=0&size=10`);
+        setMenuItems(response.data.content);
+       }
 
-      // 🎭 MOCK
+      // MOCK
       await new Promise(resolve => setTimeout(resolve, 600));
-      setMenuItems(fallbackItems);
 
     } catch (err) {
       console.error('Failed to fetch menu:', err);
       setError('Failed to load menu items');
-      setMenuItems(fallbackItems);
+      // setMenuItems(fallbackItems);
     } finally {
       setLoading(false);
     }
@@ -112,12 +119,12 @@ const MenuItemsGrid = ({ selectedCategory, onEditItem }) => {
   // ------------------------------------
   const handleToggle = (id) => {
     setMenuItems(prev =>
-      prev.map(item => (item.id === id ? { ...item, available: !item.available } : item))
+      prev.map(item => (item.foodId === id ? { ...item, available: !item.available } : item))
     );
   };
 
   const handleDelete = (id) => {
-    setMenuItems(prev => prev.filter(item => item.id !== id));
+    setMenuItems(prev => prev.filter(item => item.foodId !== id));
   };
 
   // ------------------------------------
@@ -307,7 +314,7 @@ const MenuItemsGrid = ({ selectedCategory, onEditItem }) => {
         >
           {filteredItems.map(item => (
             <MenuItemCard
-              key={item.id}
+              key={item.foodId}
               item={item}
               onEdit={onEditItem}
               onToggle={handleToggle}
