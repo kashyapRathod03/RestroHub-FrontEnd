@@ -13,14 +13,15 @@ import Landing from '../pages/public/Landing';
 import RestaurantMenu from '../pages/customer/RestaurantMenu';
 
 // Admin Pages
-import Dashboard from '../pages/admin/Dashboard';
-import Menus from '../pages/admin/Menus';
-import Orders from '../pages/admin/Orders';
-import Branches from '../pages/admin/store/Branches';
-import Tables from '../pages/admin/store/Tables';
-import Website from '../pages/admin/marketing/Website';
-import QRDisplay from '../pages/admin/marketing/QRDisplay';
-import UPILinks from '../pages/admin/UPILinks';
+import Dashboard from '../components/admin/dashboard/Dashboard';
+import Menus from '../components/admin/menu/Menus';
+import Orders from '../components/admin/orders/Orders';
+import Branches from '../components/admin/store/branch/Branches';
+import Tables from '../components/admin/store/tables/Tables';
+import Website from '../components/admin/marketing/website/Website';
+import QRDisplay from '../components/admin/marketing/qr/QRDisplay';
+import UPILinks from '../components/admin/upi/UPILinks';
+import Profile from '../components/admin/profile/Profile';
 
 const AppRoutes = () => {
   return (
@@ -49,6 +50,7 @@ const AppRoutes = () => {
         <Route path="marketing/website" element={<Website />} />
         <Route path="marketing/qr-display" element={<QRDisplay />} />
         <Route path="upi-links" element={<UPILinks />} />
+        <Route path="profile" element={<Profile />} />
       </Route>
 
       {/* ========== 404 FALLBACK ========== */}
