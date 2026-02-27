@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSiteData } from '../../context/SiteContext.jsx';
+import { useSiteData } from '@context/SiteContext.jsx';
 
 // ============================================
 // GALLERY SECTION COMPONENT

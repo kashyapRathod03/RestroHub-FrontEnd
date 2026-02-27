@@ -13,15 +13,15 @@ import Landing from '../pages/public/Landing';
 import RestaurantMenu from '../pages/customer/RestaurantMenu';
 
 // Admin Pages
-import Dashboard from '../components/admin/dashboard/Dashboard';
-import Menus from '../components/admin/menu/Menus';
-import Orders from '../components/admin/orders/Orders';
-import Branches from '../components/admin/store/branch/Branches';
-import Tables from '../components/admin/store/tables/Tables';
-import Website from '../components/admin/marketing/website/Website';
-import QRDisplay from '../components/admin/marketing/qr/QRDisplay';
-import UPILinks from '../components/admin/upi/UPILinks';
-import Profile from '../components/admin/profile/Profile';
+import Dashboard from '@components/admin/dashboard/Dashboard';
+import Menus from '@components/admin/menu/Menus';
+import Orders from '@components/admin/orders/Orders';
+import Branches from '@components/admin/store/branch/Branches';
+import Tables from '@components/admin/store/tables/Tables';
+import Website from '@components/admin/marketing/website/Website';
+import QRDisplay from '@components/admin/marketing/qr/QRDisplay';
+import UPILinks from '@components/admin/upi/UPILinks';
+import Profile from '@components/admin/profile/Profile';
 
 const AppRoutes = () => {
   return (
