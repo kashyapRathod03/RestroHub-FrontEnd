@@ -306,7 +306,7 @@ const Sidebar = ({ open, setOpen, collapsed, setCollapsed }) => {
 
             {!collapsed && (
               <div>
-                <h1 className="text-lg font-bold text-gray-900">RestroHub</h1>
+                <h1 className="text-lg font-bold text-gray-900">Restroly</h1>
                 <p className="text-xs text-gray-500">Admin Panel</p>
               </div>
             )}
