@@ -8,7 +8,7 @@ const UPITestModal = ({ isOpen, onClose, link }) => {
 
   if (!link) return null;
 
-  const upiUrl = `upi://pay?pa=${link.upiId}&pn=RestroHub&am=1&cu=INR`;
+  const upiUrl = `upi://pay?pa=${link.upiId}&pn=Restroly&am=1&cu=INR`;
 
   const handleVerify = async () => {
     try {
