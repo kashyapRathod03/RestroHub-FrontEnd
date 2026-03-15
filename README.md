@@ -1,9 +1,9 @@
-# 📌 RestroHub FrontEnd
+# 📌 Restroly FrontEnd
 
-FrontEnd web application for **RestroHub** — a QR-based restaurant menu and contactless ordering experience.
-This project provides the user interface for browsing menus, selecting items, and placing orders — connecting seamlessly with the RestroHub backend.
+FrontEnd web application for **Restroly** — a QR-based restaurant menu and contactless ordering experience.
+This project provides the user interface for browsing menus, selecting items, and placing orders — connecting seamlessly with the Restroly backend.
 
-RestroHub enables restaurants and hotels to offer digital menus and order placement by scanning QR codes placed at tables or rooms. :contentReference[oaicite:0]{index=0}
+Restroly enables restaurants and hotels to offer digital menus and order placement by scanning QR codes placed at tables or rooms. :contentReference[oaicite:0]{index=0}
 
 ---
 
@@ -13,7 +13,7 @@ RestroHub enables restaurants and hotels to offer digital menus and order placem
 ✔ Category & food listing
 ✔ View food details
 ✔ Add to cart & place orders
-✔ Connects with RestroHub backend APIs
+✔ Connects with Restroly backend APIs
 ✔ Clean design with modern frontend stack
 
 ---
@@ -35,7 +35,7 @@ This project is built using:
 
 ```
 
-RestroHub-FrontEnd/
+Restroly-FrontEnd/
 ├─ public/
 │ └─ index.html
 ├─ src/
@@ -58,8 +58,8 @@ RestroHub-FrontEnd/
 ### 📌 Clone Repository
 
 ```bash
-git clone https://github.com/rdodiya/RestroHub-FrontEnd.git
-cd RestroHub-FrontEnd
+git clone https://github.com/rdodiya/Restroly-FrontEnd.git
+cd Restroly-FrontEnd
 ````
 
 ### 📌 Install Dependencies
@@ -96,7 +96,7 @@ http://localhost:3000
 
 ## 🌐 Backend Integration
 
-This frontend app connects to the **RestroHub backend** to fetch menus, categories, and handle orders.
+This frontend app connects to the **Restroly backend** to fetch menus, categories, and handle orders.
 
 Ensure your backend is running and update the API base URL in:
 
@@ -193,9 +193,9 @@ If you have questions or feedback, feel free to reach out:
 
 ---
 
-## ⭐ About RestroHub
+## ⭐ About Restroly
 
-RestroHub is a QR-based food ordering platform that enables contactless menu browsing and seamless order placement for hotels and restaurants, enhancing guest experiences and driving revenue. ([restrohub.com][1])
+Restroly is a QR-based food ordering platform that enables contactless menu browsing and seamless order placement for hotels and restaurants, enhancing guest experiences and driving revenue. ([restrohub.com][1])
 
 ```
 
