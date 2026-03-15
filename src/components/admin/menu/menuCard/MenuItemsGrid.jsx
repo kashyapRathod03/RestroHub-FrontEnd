@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { Search, RefreshCw, AlertCircle, UtensilsCrossed } from 'lucide-react';
 import MenuItemCard from './MenuItemCard';
 import api from "@services/common/api";
@@ -60,7 +60,7 @@ const CardSkeleton = () => (
 // ============================================
 // MAIN COMPONENT
 // ============================================
-const MenuItemsGrid = ({ selectedCategory, onEditItem }) => {
+const MenuItemsGrid = forwardRef(({ selectedCategory, onEditItem }, ref) => {
   const [menuItems, setMenuItems] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
@@ -85,6 +85,12 @@ const MenuItemsGrid = ({ selectedCategory, onEditItem }) => {
     fetchMenuItems();
   }, [selectedCategory]);
 
+  useImperativeHandle(ref, () => ({
+    refreshFoods() {
+      fetchMenuItems();
+    }
+  }));
+
   const fetchMenuItems = async () => {
     try {
       setLoading(true);
@@ -92,15 +98,17 @@ const MenuItemsGrid = ({ selectedCategory, onEditItem }) => {
 
       // UNCOMMENT WHEN API READY
       // Need to change this or api call
-       const params = selectedCategory !== 'all' ? `?category=${selectedCategory}` : '';
-       var response =null;
-       if(selectedCategory === 'all'){
+      //const params = selectedCategory !== 'all' ? `category=${selectedCategory}` : '';
+      var response = null;
+      if (selectedCategory === 'all') {
         response = await api.get(`/secure/api/v1/foods?page=0&size=10&sortBy=name&sortDirection=asc`);
         setMenuItems(response.data.content);
-       }else{
-        response = await api.get(`/secure/api/v1/foods/category/${params}?page=0&size=10`);
-        setMenuItems(response.data.content);
-       }
+      } else {
+        response = await api.get(
+          `/secure/api/v1/foods/category/${selectedCategory}?page=0&size=10`
+        );
+
+      }
 
       // MOCK
       await new Promise(resolve => setTimeout(resolve, 600));
@@ -336,6 +344,6 @@ const MenuItemsGrid = ({ selectedCategory, onEditItem }) => {
       )}
     </div>
   );
-};
+});
 
 export default MenuItemsGrid;
