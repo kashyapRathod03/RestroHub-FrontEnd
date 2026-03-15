@@ -16,7 +16,7 @@ const CategorySkeleton = () => (
 // ============================================
 // MAIN COMPONENT
 // ============================================
-const CategorySidebar = ({ selectedCategory, onCategoryChange }) => {
+const CategorySidebar = ({ selectedCategory, onCategoryChange, onAddCategory, setAllCategories }) => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -41,21 +41,19 @@ const CategorySidebar = ({ selectedCategory, onCategoryChange }) => {
   const fetchCategories = async () => {
     try {
       setLoading(true);
+      var response = null;
+      response = await api.get(`/secure/api/v1/categories/getallcategories?page=0&size=10&sortBy=name&sortDirection=asc`);
+      const data = [
+        { id: 'all', name: 'All Items', foodIds: [] },
+        ...response.data.data.content
+      ];
 
-      // 🔌 UNCOMMENT WHEN API READY
-      // const response = await api.get('/api/menu/categories');
-      // setCategories([
-      //   { id: 'all', name: 'All Items', count: response.data.totalCount, emoji: '🍽️' },
-      //   ...response.data.categories,
-      // ]);
-
-      // 🎭 MOCK
-      await new Promise(resolve => setTimeout(resolve, 400));
-      setCategories(fallbackCategories);
-
+      setCategories(data);
+      setAllCategories(response.data.data.content);
     } catch (err) {
       console.error('Failed to fetch categories:', err);
       setCategories(fallbackCategories);
+      setAllCategories(fallbackCategories);
     } finally {
       setLoading(false);
     }
@@ -85,13 +83,12 @@ const CategorySidebar = ({ selectedCategory, onCategoryChange }) => {
           <div className="space-y-2">
             {categories.map((cat) => (
               <button
-                key={cat.id}
-                onClick={() => onCategoryChange(cat.id)}
-                className={`w-full flex items-center justify-between p-3 rounded-xl transition-all ${
-                  selectedCategory === cat.id
-                    ? 'bg-blue-600 text-white shadow-md shadow-blue-200'
-                    : 'hover:bg-blue-50 text-gray-600'
-                }`}
+                key={cat.categoryId}
+                onClick={() => {debugger; onCategoryChange(cat.categoryId)}}
+                className={`w-full flex items-center justify-between p-3 rounded-xl transition-all ${selectedCategory === cat.categoryId
+                  ? 'bg-blue-600 text-white shadow-md shadow-blue-200'
+                  : 'hover:bg-blue-50 text-gray-600'
+                  }`}
               >
                 <div className="flex items-center gap-3">
                   <span className="text-xl">{cat.emoji}</span>
@@ -99,11 +96,10 @@ const CategorySidebar = ({ selectedCategory, onCategoryChange }) => {
                 </div>
                 <div className="flex items-center gap-2">
                   <span
-                    className={`text-sm ${
-                      selectedCategory === cat.id ? 'text-white/80' : 'text-gray-400'
-                    }`}
+                    className={`text-sm ${selectedCategory === cat.categoryId ? 'text-white/80' : 'text-gray-400'
+                      }`}
                   >
-                    {cat.count}
+                    {cat.foodIds.length}
                   </span>
                   <ChevronRight className="w-4 h-4" />
                 </div>
@@ -113,7 +109,10 @@ const CategorySidebar = ({ selectedCategory, onCategoryChange }) => {
         )}
 
         {/* Add Category */}
-        <button className="w-full mt-4 flex items-center justify-center gap-2 p-3 border-2 border-dashed border-gray-200 rounded-xl text-gray-400 hover:border-blue-300 hover:text-blue-500 transition-all text-sm">
+        <button
+          onClick={onAddCategory}
+          className="w-full mt-4 flex items-center justify-center gap-2 p-3 border-2 border-dashed border-gray-200 rounded-xl text-gray-400 hover:border-blue-300 hover:text-blue-500 transition-all text-sm"
+        >
           <FolderPlus className="w-4 h-4" />
           Add Category
         </button>
