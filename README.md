@@ -6,6 +6,8 @@ This project provides the user interface for browsing menus, selecting items, an
 Restroly enables restaurants and hotels to offer digital menus and order placement by scanning QR codes placed at tables or rooms. :contentReference[oaicite:0]{index=0}
 
 ---
+github deployment
+https://share.google/aimode/hNGOvLxyr870LUf6Z
 
 ## 🚀 Features
 
@@ -145,6 +147,8 @@ Example (Netlify):
 ```bash
 npm run build
 # then deploy the build folder
+npm run deploy
+
 ```
 
 ---
