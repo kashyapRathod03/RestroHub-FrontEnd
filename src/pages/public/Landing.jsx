@@ -110,7 +110,7 @@ const Landing = () => {
     {
       name: 'Ramesh Patel',
       role: 'Owner, Rajkot Dhaba',
-      text: 'RestroHub doubled our order efficiency. Customers love the QR menu and we love the zero-error billing!',
+      text: 'Restroly doubled our order efficiency. Customers love the QR menu and we love the zero-error billing!',
       rating: 5,
     },
     {
@@ -159,7 +159,7 @@ const Landing = () => {
                 <UtensilsCrossed className="h-5 w-5 text-white" />
               </div>
               <span className="text-xl font-extrabold tracking-tight text-slate-900 sm:text-2xl">
-                Restro<span className="text-blue-600">Hub</span>
+                Restro<span className="text-blue-600">ly</span>
               </span>
             </Link>
 
@@ -253,7 +253,7 @@ const Landing = () => {
             {/* Trust Badge */}
             <div className="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-700 sm:mb-8">
               <Star className="h-4 w-4 fill-blue-500 text-blue-500" />
-              Trusted by 500+ Restaurants across India
+              Trusted by 5+ Restaurants across India
             </div>
 
             {/* Heading */}
@@ -306,7 +306,7 @@ const Landing = () => {
       {/* ================================================ */}
       {/* STATS BAR                                        */}
       {/* ================================================ */}
-      <section className="border-y border-slate-100 bg-white py-10 sm:py-14">
+      {/* <section className="border-y border-slate-100 bg-white py-10 sm:py-14">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 gap-8 text-center md:grid-cols-4">
             {stats.map((stat, i) => (
@@ -317,7 +317,7 @@ const Landing = () => {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* ================================================ */}
       {/* FEATURES                                         */}
@@ -520,7 +520,7 @@ const Landing = () => {
               Ready to Digitize Your Restaurant?
             </h2>
             <p className="mx-auto mt-4 max-w-lg text-lg text-blue-100/90">
-              Join 500+ restaurants across India already using RestroHub to
+              Join 5+ restaurants across India already using Restroly to
               serve customers faster.
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
@@ -552,7 +552,7 @@ const Landing = () => {
                   <UtensilsCrossed className="h-5 w-5 text-white" />
                 </div>
                 <span className="text-xl font-extrabold text-white">
-                  Restro<span className="text-blue-400">Hub</span>
+                  Restro<span className="text-blue-400">ly</span>
                 </span>
               </Link>
               <p className="mt-4 max-w-xs text-sm text-slate-400">
@@ -585,7 +585,7 @@ const Landing = () => {
           {/* Bottom Bar */}
           <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-slate-800 pt-8 sm:flex-row">
             <p className="text-sm text-slate-500">
-              © {new Date().getFullYear()} RestroHub. All rights reserved.
+              © {new Date().getFullYear()} Restroly. All rights reserved.
             </p>
             <p className="text-sm text-slate-500">Made with ❤️ in India</p>
           </div>
