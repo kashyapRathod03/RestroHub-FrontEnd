@@ -107,7 +107,7 @@ const MenuItemsGrid = forwardRef(({ selectedCategory, onEditItem }, ref) => {
         response = await api.get(
           `/secure/api/v1/foods/category/${selectedCategory}?page=0&size=10`
         );
-
+        setMenuItems(response.data.content);
       }
 
       // MOCK
