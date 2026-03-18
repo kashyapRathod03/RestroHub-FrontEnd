@@ -70,12 +70,12 @@ const MenuItemsGrid = forwardRef(({ selectedCategory, onEditItem }, ref) => {
   // FALLBACK DATA
   // ------------------------------------
   const fallbackItems = [
-    { id: 1, name: 'Paneer Tikka', price: 250, category: 'starters', stock: 25, available: true },
-    { id: 2, name: 'Butter Naan', price: 45, category: 'main-course', stock: 100, available: true },
-    { id: 3, name: 'Biryani', price: 320, category: 'main-course', stock: 15, available: true },
-    { id: 4, name: 'Mango Lassi', price: 90, category: 'drinks', stock: 50, available: true },
-    { id: 5, name: 'Undhiyu', price: 280, category: 'main-course', stock: 0, available: false },
-    { id: 6, name: 'Gujarati Thali', price: 350, category: 'main-course', stock: 20, available: true },
+    { id: 1, name: 'Paneer Tikka', price: 250, categoryId: 'starters', stock: 25, available: true },
+    { id: 2, name: 'Butter Naan', price: 45, categoryId: 'main-course', stock: 100, available: true },
+    { id: 3, name: 'Biryani', price: 320, categoryId: 'main-course', stock: 15, available: true },
+    { id: 4, name: 'Mango Lassi', price: 90, categoryId: 'drinks', stock: 50, available: true },
+    { id: 5, name: 'Undhiyu', price: 280, categoryId: 'main-course', stock: 0, available: false },
+    { id: 6, name: 'Gujarati Thali', price: 350, categoryId: 'main-course', stock: 20, available: true },
   ];
 
   // ------------------------------------
@@ -95,18 +95,12 @@ const MenuItemsGrid = forwardRef(({ selectedCategory, onEditItem }, ref) => {
     try {
       setLoading(true);
       setError(null);
-
-      // UNCOMMENT WHEN API READY
-      // Need to change this or api call
-      //const params = selectedCategory !== 'all' ? `category=${selectedCategory}` : '';
       var response = null;
       if (selectedCategory === 'all') {
         response = await api.get(`/secure/api/v1/foods?page=0&size=10&sortBy=name&sortDirection=asc`);
         setMenuItems(response.data.content);
       } else {
-        response = await api.get(
-          `/secure/api/v1/foods/category/${selectedCategory}?page=0&size=10`
-        );
+        response = await api.get(`/secure/api/v1/foods/category/${selectedCategory}?page=0&size=10`);
         setMenuItems(response.data.content);
       }
 
@@ -127,7 +121,7 @@ const MenuItemsGrid = forwardRef(({ selectedCategory, onEditItem }, ref) => {
   // ------------------------------------
   const handleToggle = (id) => {
     setMenuItems(prev =>
-      prev.map(item => (item.foodId === id ? { ...item, available: !item.available } : item))
+      prev.map(item => (item.foodId === id ? { ...item, isAvailable: !item.isAvailable } : item))
     );
   };
 
@@ -139,7 +133,7 @@ const MenuItemsGrid = forwardRef(({ selectedCategory, onEditItem }, ref) => {
   // FILTER LOGIC
   // ------------------------------------
   const filteredItems = menuItems
-    .filter(item => selectedCategory === 'all' || item.category === selectedCategory)
+    .filter(item => selectedCategory === 'all' || item.categoryId === selectedCategory)
     .filter(item => item.name.toLowerCase().includes(searchQuery.toLowerCase()));
 
   // ------------------------------------
@@ -320,7 +314,7 @@ const MenuItemsGrid = forwardRef(({ selectedCategory, onEditItem }, ref) => {
             xl:grid-cols-3
           "
         >
-          {filteredItems.map(item => (
+          {menuItems.map(item => (
             <MenuItemCard
               key={item.foodId}
               item={item}

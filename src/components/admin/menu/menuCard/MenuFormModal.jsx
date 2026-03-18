@@ -88,6 +88,7 @@ const MenuFormModal = ({ isOpen, onClose, editingItem, allCategories }) => {
       }
 
       if (editingItem) {
+        payload.append("imageUrl", formData.imageUrl);
         await api.put(`/secure/api/v1/foods/${editingItem.foodId}`, payload);
       } else {
         await api.post("/secure/api/v1/foods", payload);

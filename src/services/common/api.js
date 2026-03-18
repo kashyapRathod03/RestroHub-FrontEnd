@@ -1,5 +1,4 @@
 import axios from "axios";
-import { redirect } from "react-router-dom";
 
 const api = axios.create({
   baseURL: import.meta.env.API_BASE_URL || "http://localhost:8181/restroly",
