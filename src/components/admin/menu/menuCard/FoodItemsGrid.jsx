@@ -1,6 +1,6 @@
 import { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { Search, RefreshCw, AlertCircle, UtensilsCrossed } from 'lucide-react';
-import MenuItemCard from './MenuItemCard';
+import MenuItemCard from './FoodItemCard';
 import api from "@services/common/api";
 
 
