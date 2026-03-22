@@ -9,9 +9,9 @@ const MenuFormModal = ({ isOpen, onClose, editingItem, allCategories }) => {
     name: '',
     description: '',
     price: '',
-    category: '',
-    imageFile: null,    // file for upload
-    imageUrl: '',       // preview
+    categoryId: '',       // ← This is the single source of truth
+    imageFile: null,
+    imageUrl: '',
     isAvailable: true,
     isVeg: true,
     isDelete: false
@@ -27,7 +27,8 @@ const MenuFormModal = ({ isOpen, onClose, editingItem, allCategories }) => {
         name: editingItem.name || '',
         description: editingItem.description || '',
         price: editingItem.price?.toString() || '',
-        category: editingItem.category || '',
+        // ✅ FIX 1: Was 'category', must be 'categoryId'
+        categoryId: editingItem.categoryId || '',
         imageFile: null,
         imageUrl: editingItem.imageUrl || '',
         isAvailable: editingItem.isAvailable ?? true,
@@ -35,7 +36,18 @@ const MenuFormModal = ({ isOpen, onClose, editingItem, allCategories }) => {
         isDelete: editingItem.isDelete ?? false
       });
     } else {
-      setFormData(prev => ({ ...prev, imageFile: null, imageUrl: '' }));
+      // ✅ Reset entire form when adding new item
+      setFormData({
+        name: '',
+        description: '',
+        price: '',
+        categoryId: '',
+        imageFile: null,
+        imageUrl: '',
+        isAvailable: true,
+        isVeg: true,
+        isDelete: false
+      });
     }
     setCategories(allCategories || []);
   }, [editingItem, isOpen, allCategories]);
@@ -49,7 +61,7 @@ const MenuFormModal = ({ isOpen, onClose, editingItem, allCategories }) => {
     setFormData(prev => ({
       ...prev,
       imageFile: file,
-      imageUrl: URL.createObjectURL(file) // for preview
+      imageUrl: URL.createObjectURL(file)
     }));
   };
 
@@ -65,7 +77,8 @@ const MenuFormModal = ({ isOpen, onClose, editingItem, allCategories }) => {
       payload.append("name", formData.name);
       payload.append("description", formData.description);
       payload.append("price", formData.price.toString());
-      payload.append("category", formData.category);
+      // ✅ FIX 2: Key must match backend DTO field name
+      payload.append("categoryId", formData.categoryId);
       payload.append("isAvailable", formData.isAvailable ? "true" : "false");
       payload.append("isVeg", formData.isVeg ? "true" : "false");
       payload.append("isDelete", formData.isDelete ? "true" : "false");
@@ -74,12 +87,13 @@ const MenuFormModal = ({ isOpen, onClose, editingItem, allCategories }) => {
         payload.append("image", formData.imageFile);
       }
 
-      // Axios will auto-set Content-Type to multipart/form-data with boundary
       if (editingItem) {
+        payload.append("imageUrl", formData.imageUrl);
         await api.put(`/secure/api/v1/foods/${editingItem.foodId}`, payload);
       } else {
         await api.post("/secure/api/v1/foods", payload);
       }
+
       onClose();
     } catch (err) {
       console.error("Failed to save item:", err.response?.data || err);
@@ -106,7 +120,10 @@ const MenuFormModal = ({ isOpen, onClose, editingItem, allCategories }) => {
             <Dialog.Title className="text-xl font-bold text-gray-800">
               {editingItem ? 'Edit Menu Item' : 'Add Menu Item'}
             </Dialog.Title>
-            <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-xl transition-colors">
+            <button
+              onClick={onClose}
+              className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
+            >
               <X className="w-5 h-5 text-gray-400" />
             </button>
           </div>
@@ -116,12 +133,16 @@ const MenuFormModal = ({ isOpen, onClose, editingItem, allCategories }) => {
 
             {/* Name */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Name
+              </label>
               <input
                 type="text"
                 value={formData.name}
                 onChange={(e) => updateField('name', e.target.value)}
-                className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-xl 
+                           focus:ring-2 focus:ring-blue-500 focus:border-transparent 
+                           outline-none transition-all"
                 placeholder="Enter item name"
                 required
               />
@@ -129,50 +150,78 @@ const MenuFormModal = ({ isOpen, onClose, editingItem, allCategories }) => {
 
             {/* Description */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Description
+              </label>
               <textarea
                 value={formData.description}
                 onChange={(e) => updateField('description', e.target.value)}
                 rows={3}
-                className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-xl 
+                           focus:ring-2 focus:ring-blue-500 focus:border-transparent 
+                           outline-none transition-all"
                 placeholder="Food description"
               />
             </div>
 
             {/* Price */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Price (₹)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Price (₹)
+              </label>
               <input
                 type="number"
                 step="0.01"
                 value={formData.price}
                 onChange={(e) => updateField('price', e.target.value)}
-                className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-xl 
+                           focus:ring-2 focus:ring-blue-500 focus:border-transparent 
+                           outline-none transition-all"
                 placeholder="250"
                 required
               />
             </div>
 
-            {/* Category */}
+            {/* ✅ FIX 3: Category Select — Fixed value binding + onChange field name */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Category
+              </label>
               <select
-                value={formData.category}
-                onChange={(e) => updateField('category', e.target.value)}
-                className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                value={formData.categoryId}
+                // ✅ FIX: Was updating 'category', now updates 'categoryId'
+                onChange={(e) => updateField('categoryId', e.target.value)}
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-xl 
+                           focus:ring-2 focus:ring-blue-500 focus:border-transparent 
+                           outline-none transition-all"
+                required
               >
+                {/* ✅ FIX 4: Added default placeholder option */}
+                <option value="" disabled>
+                  Select a category
+                </option>
                 {categories.map((cat) => (
-                  <option key={cat.categoryId} value={cat.categoryId}>{cat.name}</option>
+                  <option key={cat.categoryId} value={cat.categoryId}>
+                    {cat.name}
+                  </option>
                 ))}
               </select>
             </div>
 
             {/* Image Upload */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Image</label>
-              <label className="border-2 border-dashed border-gray-200 rounded-xl p-4 text-center hover:bg-blue-50 hover:border-blue-300 cursor-pointer transition-all w-full block relative">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Image
+              </label>
+              <label className="border-2 border-dashed border-gray-200 rounded-xl p-4 
+                                text-center hover:bg-blue-50 hover:border-blue-300 
+                                cursor-pointer transition-all w-full block relative">
                 {formData.imageUrl ? (
-                  <img src={formData.imageUrl} alt="Food" className="mx-auto mb-2 w-32 h-32 object-cover rounded-xl" />
+                  <img
+                    src={formData.imageUrl}
+                    alt="Food"
+                    className="mx-auto mb-2 w-32 h-32 object-cover rounded-xl"
+                  />
                 ) : (
                   <>
                     <ImageIcon className="w-8 h-8 text-blue-300 mx-auto mb-2" />
@@ -185,7 +234,6 @@ const MenuFormModal = ({ isOpen, onClose, editingItem, allCategories }) => {
                   accept="image/*"
                   onChange={handleImageSelect}
                   className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
-                  style={{ marginLeft: "-25%", height: "15%", width: "50%" }}
                 />
               </label>
             </div>
@@ -193,11 +241,19 @@ const MenuFormModal = ({ isOpen, onClose, editingItem, allCategories }) => {
             {/* Veg + Availability */}
             <div className="flex gap-6">
               <label className="flex items-center gap-2 text-sm text-gray-700">
-                <input type="checkbox" checked={formData.isVeg} onChange={(e) => updateField('isVeg', e.target.checked)} />
+                <input
+                  type="checkbox"
+                  checked={formData.isVeg}
+                  onChange={(e) => updateField('isVeg', e.target.checked)}
+                />
                 Vegetarian
               </label>
               <label className="flex items-center gap-2 text-sm text-gray-700">
-                <input type="checkbox" checked={formData.isAvailable} onChange={(e) => updateField('isAvailable', e.target.checked)} />
+                <input
+                  type="checkbox"
+                  checked={formData.isAvailable}
+                  onChange={(e) => updateField('isAvailable', e.target.checked)}
+                />
                 Available
               </label>
             </div>
@@ -208,14 +264,18 @@ const MenuFormModal = ({ isOpen, onClose, editingItem, allCategories }) => {
                 type="button"
                 onClick={onClose}
                 disabled={submitting}
-                className="flex-1 px-4 py-2.5 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors font-medium text-gray-700 disabled:opacity-50"
+                className="flex-1 px-4 py-2.5 border border-gray-200 rounded-xl 
+                           hover:bg-gray-50 transition-colors font-medium text-gray-700 
+                           disabled:opacity-50"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={submitting}
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium disabled:opacity-50"
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 
+                           bg-blue-600 text-white rounded-xl hover:bg-blue-700 
+                           transition-colors font-medium disabled:opacity-50"
               >
                 {submitting && <Loader2 className="w-4 h-4 animate-spin" />}
                 {editingItem ? 'Update' : 'Add Item'}

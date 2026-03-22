@@ -9,6 +9,7 @@ import {
   Trash2,
   Loader2
 } from 'lucide-react';
+import api from "@services/common/api";
 
 const MenuItemCard = ({ item, onEdit, onToggle, onDelete }) => {
   const [togglingAvailability, setTogglingAvailability] = useState(false);
@@ -19,9 +20,11 @@ const MenuItemCard = ({ item, onEdit, onToggle, onDelete }) => {
   // ------------------------------------
   const handleToggle = async () => {
     try {
+      debugger
       setTogglingAvailability(true);
       await new Promise(resolve => setTimeout(resolve, 300));
-      onToggle(item.id);
+      await api.patch(`/secure/api/v1/foods/${item.foodId}/${!item.isAvailable}`);
+      onToggle(item.foodId);
     } catch (err) {
       console.error('Failed to toggle:', err);
     } finally {
@@ -34,7 +37,8 @@ const MenuItemCard = ({ item, onEdit, onToggle, onDelete }) => {
     try {
       setDeleting(true);
       await new Promise(resolve => setTimeout(resolve, 300));
-      onDelete(item.id);
+      await api.delete(`/secure/api/v1/foods/${item.foodId}`);
+      onDelete(item.foodId);
     } catch (err) {
       console.error('Failed to delete:', err);
     } finally {
@@ -46,9 +50,9 @@ const MenuItemCard = ({ item, onEdit, onToggle, onDelete }) => {
   // STOCK STATUS
   // ------------------------------------
   const getStockBadge = () => {
-    if (item.stock > 10) return { text: 'In Stock', className: 'bg-green-50 text-green-700' };
-    if (item.stock > 0) return { text: 'Low Stock', className: 'bg-yellow-50 text-yellow-700' };
-    return { text: 'Out of Stock', className: 'bg-red-50 text-red-700' };
+    if (item.isAvailable) return { text: 'In Stock', className: 'bg-green-50 text-green-700' };
+    //if (item.stock > 0) return { text: 'Low Stock', className: 'bg-yellow-50 text-yellow-700' };
+    else return { text: 'Out of Stock', className: 'bg-red-50 text-red-700' };
   };
 
   const stockBadge = getStockBadge();
@@ -61,7 +65,7 @@ const MenuItemCard = ({ item, onEdit, onToggle, onDelete }) => {
       className={`
         bg-white rounded-2xl shadow-sm border border-gray-100
         hover:shadow-md hover:border-blue-100 transition-all
-        ${!item.available ? 'opacity-70' : ''}
+        ${!item.isAvailable ? 'opacity-70' : ''}
 
         /* MOBILE: vertical stack with padding */
         p-4
@@ -90,8 +94,21 @@ const MenuItemCard = ({ item, onEdit, onToggle, onDelete }) => {
           lg:w-full lg:h-36 lg:mb-4
         `}
       >
-        <ImageIcon className="w-10 h-10 text-blue-200 sm:w-8 sm:h-8 lg:w-12 lg:h-12" />
-        {!item.available && (
+        {item.imageUrl ? (
+          <img
+            src={item.imageUrl}
+            alt={item.name || "Item image"}
+            className="w-full h-full object-cover rounded-lg"
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.style.display = "none";
+              e.target.nextSibling.style.display = "flex";
+            }}
+          />
+        ) : (
+          <ImageIcon className="w-10 h-10 text-blue-200 sm:w-8 sm:h-8 lg:w-12 lg:h-12" />
+        )}
+        {!item.isAvailable && (
           <div className="absolute inset-0 bg-gray-800/60 flex items-center justify-center">
             <span className="text-white font-semibold bg-red-500 px-3 py-1 rounded-full text-xs sm:text-xs lg:text-sm">
               Sold Out
@@ -122,7 +139,7 @@ const MenuItemCard = ({ item, onEdit, onToggle, onDelete }) => {
         {/* Stock Info */}
         <div className="flex items-center justify-between mb-3 sm:mb-2 lg:mb-4">
           <span className="text-sm sm:text-xs lg:text-sm text-gray-600">
-            Stock: {item.stock} units
+            Avalilablity :
           </span>
           <span
             className={`text-xs px-2 py-0.5 sm:py-0.5 lg:py-1 rounded-full font-medium ${stockBadge.className}`}
@@ -176,7 +193,7 @@ const MenuItemCard = ({ item, onEdit, onToggle, onDelete }) => {
             className={`
               flex items-center justify-center gap-1.5 rounded-xl transition-colors font-medium disabled:opacity-50
 
-              ${item.available
+              ${item.isAvailable
                 ? 'bg-yellow-50 text-yellow-800 hover:bg-yellow-100'
                 : 'bg-green-50 text-green-800 hover:bg-green-100'
               }
@@ -193,16 +210,16 @@ const MenuItemCard = ({ item, onEdit, onToggle, onDelete }) => {
           >
             {togglingAvailability ? (
               <Loader2 className="w-4 h-4 sm:w-3.5 sm:h-3.5 lg:w-4 lg:h-4 animate-spin" />
-            ) : item.available ? (
+            ) : item.isAvailable ? (
               <EyeOff className="w-4 h-4 sm:w-3.5 sm:h-3.5 lg:w-4 lg:h-4" />
             ) : (
               <Eye className="w-4 h-4 sm:w-3.5 sm:h-3.5 lg:w-4 lg:h-4" />
             )}
             <span className="sm:hidden lg:inline">
-              {item.available ? 'Hide' : 'Show'}
+              {item.isAvailable ? 'Hide' : 'Show'}
             </span>
             <span className="hidden sm:inline lg:hidden">
-              {item.available ? 'Hide' : 'Show'}
+              {item.isAvailable ? 'Hide' : 'Show'}
             </span>
           </button>
 

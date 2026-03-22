@@ -24,11 +24,11 @@ const CategorySidebar = ({ selectedCategory, onCategoryChange, onAddCategory, se
   // FALLBACK DATA
   // ------------------------------------
   const fallbackCategories = [
-    { id: 'all', name: 'All Items', count: 24, emoji: '🍽️' },
-    { id: 'main-course', name: 'Main Course', count: 12, emoji: '🥘' },
-    { id: 'starters', name: 'Starters', count: 8, emoji: '🍛' },
-    { id: 'drinks', name: 'Drinks', count: 4, emoji: '🥛' },
-    { id: 'desserts', name: 'Desserts', count: 0, emoji: '🍰' },
+    { categoryId: 'all', name: 'All Items', count: 24, emoji: '🍽️' },
+    { categoryId: 'main-course', name: 'Main Course', count: 12, emoji: '🥘' },
+    { categoryId: 'starters', name: 'Starters', count: 8, emoji: '🍛' },
+    { categoryId: 'drinks', name: 'Drinks', count: 4, emoji: '🥛' },
+    { categoryId: 'desserts', name: 'Desserts', count: 0, emoji: '🍰' },
   ];
 
   // ------------------------------------
@@ -44,7 +44,7 @@ const CategorySidebar = ({ selectedCategory, onCategoryChange, onAddCategory, se
       var response = null;
       response = await api.get(`/secure/api/v1/categories/getallcategories?page=0&size=10&sortBy=name&sortDirection=asc`);
       const data = [
-        { id: 'all', name: 'All Items', foodIds: [] },
+        { categoryId: 'all', name: 'All Items', foodIds: [] },
         ...response.data.data.content
       ];
 
