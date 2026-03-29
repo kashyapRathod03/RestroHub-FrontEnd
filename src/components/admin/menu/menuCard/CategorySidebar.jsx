@@ -24,11 +24,11 @@ const CategorySidebar = ({ selectedCategory, onCategoryChange, onAddCategory, se
   // FALLBACK DATA
   // ------------------------------------
   const fallbackCategories = [
-    { categoryId: 'all', name: 'All Items', count: 24, emoji: '🍽️' },
-    { categoryId: 'main-course', name: 'Main Course', count: 12, emoji: '🥘' },
-    { categoryId: 'starters', name: 'Starters', count: 8, emoji: '🍛' },
-    { categoryId: 'drinks', name: 'Drinks', count: 4, emoji: '🥛' },
-    { categoryId: 'desserts', name: 'Desserts', count: 0, emoji: '🍰' },
+    { categoryId: 'all', name: 'All Items', count: 24, emoji: '🍽️', foodIds:[] },
+    { categoryId: 'main-course', name: 'Main Course', count: 12, emoji: '🥘', foodIds:[]  },
+    { categoryId: 'starters', name: 'Starters', count: 8, emoji: '🍛', foodIds:[]  },
+    { categoryId: 'drinks', name: 'Drinks', count: 4, emoji: '🥛', foodIds:[]  },
+    { categoryId: 'desserts', name: 'Desserts', count: 0, emoji: '🍰', foodIds:[]  },
   ];
 
   // ------------------------------------
