@@ -230,7 +230,7 @@ const CategoryMenuSection = ({ category, index, defaultExpanded = true }) => {
   const [expanded, setExpanded] = useState(defaultExpanded);
   const style = getCategoryStyle(index);
   const foodCount = category.foods?.length || category.foodCount || 0;
-
+debugger
   return (
     <div className={`rounded-2xl border overflow-hidden transition-all duration-300
                      ${expanded ? `${style.border} shadow-sm` : 'border-gray-200'}`}>
@@ -1042,9 +1042,18 @@ const MenusGrid = forwardRef(({ onEditMenu, onCreateMenu }, ref) => {
     }
   };
 
-  const openDetailModal = (menu) => {
-    setViewingMenu(menu);
-    setIsDetailOpen(true);
+  const openDetailModal = async (menu) => {
+    debugger
+    try {
+      var fullViewMenu = await api.get(`/secure/api/v1/menus/${menu.menuId}`);
+      setViewingMenu(fullViewMenu.data);
+    } catch (err) {
+      setViewingMenu(menu)
+      console.error('Failed to delete menu:', err.response?.data || err);
+      alert(err.response?.data?.message || 'Failed to delete menu');
+    } finally {
+      setIsDetailOpen(true);
+    }
   };
 
   const closeDetailModal = () => {
